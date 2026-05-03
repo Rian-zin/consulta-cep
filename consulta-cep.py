@@ -1,13 +1,21 @@
 import requests
 
 def buscar_endereco(cep):
-    url = f"https://viacep.com.br/ws/{cep}/json/"
-    resposta = requests.get(url)
+    try:
+        url = f"https://viacep.com.br/ws/{cep}/json/"
+        resposta = requests.get(url)
 
-    resposta = resposta.json()
-    return resposta
+        resposta = resposta.json()
+        return resposta
+    except:
+        print("Erro: Não foi possível conectar ao viacep.")
 
 if __name__ == '__main__':
-    cep_digitado = int(input("Digite o CEP (somente números): "))
+    cep_digitado = (input("Digite o CEP (somente números): "))
     dados_cep = buscar_endereco(cep_digitado)
-    print(dados_cep['logradouro'], dados_cep['localidade'])
+    if dados_cep:
+        if 'erro' in dados_cep:
+            print("CEP não encontrado")
+        else:
+            print(dados_cep['logradouro'])
+            print(dados_cep['localidade'])
